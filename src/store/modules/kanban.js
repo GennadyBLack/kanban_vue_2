@@ -4,7 +4,7 @@ const state ={
     column: [
       {
         id: 1,
-        title: "TODO",
+        title: "Monday",
         card: [
           {
             id: 1,
@@ -23,7 +23,7 @@ const state ={
       },
       {
         id: 2,
-        title: "TODOSEC",
+        title: "Tuesday",
         card: [
           {
             id: 12,
@@ -42,7 +42,7 @@ const state ={
       },
       {
         id: 3,
-        title: "TODOSONOSEC",
+        title: "Wednesday",
         card: [
           {
             id: 13,
@@ -59,11 +59,93 @@ const state ={
         ],
         color: "MediumSpringGreen",
       },
+      
+      {
+        id: 4,
+        title: "Thursday",
+        card: [
+          {
+            id: 13,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+          {
+            id: 23,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+        ],
+        color: "MediumSpringGreen",
+      },
+      
+      {
+        id: 5,
+        title: "Friday",
+        card: [
+          {
+            id: 13,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+          {
+            id: 23,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+        ],
+        color: "MediumSpringGreen",
+      },
+      
+      {
+        id: 6,
+        title: "Saturday",
+        card: [
+          {
+            id: 13,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+          {
+            id: 23,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+        ],
+        color: "MediumSpringGreen",
+      },
+      
+      {
+        id: 7,
+        title: "Sunday",
+        card: [
+          {
+            id: 13,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+          {
+            id: 23,
+            title: "test title",
+            description: "description for card",
+            createdAt: new Date(),
+          },
+        ],
+        color: "MediumSpringGreen",
+      }
     ]
 }
 
 const mitations = {
-
+    updateKanban(state,value){
+        state = value
+    }
 }
 
 const actions = {
