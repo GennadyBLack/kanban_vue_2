@@ -1,10 +1,19 @@
 <template>
-  <div>
+  <div v-if='items!= null'>
     <div class="back-form"></div>
     <div class="add-car-form">
-     <input v-for='(input,index) in items' :key='input.name' v-model="items[index]" type="text" >
+      <input
+        v-for="(input, index) in fieldsWithoutId"
+        :key="input.name"
+        v-model="items[index]"
+        type="text"
+        :placeholder="index"
+      />
       <div class="btn-group">
-        <button type="button" class="btn btn-outline-success" @click="addCard"  >
+        <button v-if='ButtonToggler' type="button" class="btn btn-outline-success" @click="editCard">
+          Edit
+        </button>
+        <button v-if='!ButtonToggler' type="button" class="btn btn-outline-success" @click="addCard">
           Add
         </button>
         <button
@@ -20,30 +29,34 @@
 </template>
 <script>
 export default {
-  name: "Test",
+  name: "Modal",
+  computed: {
+    fieldsWithoutId() {
+      const newFields = {};
+      const fields = this.items;
+      for (let key in fields) {
+        if (key == "id" || key == "createdAt") {
+          continue;
+        }
+        newFields[key] = fields[key];
+      }
+      return newFields;
+    },
+    ButtonToggler(){
+      return this.items.id ==''? false: true
+    }
+  },
   props: {
     fields: {
       required: true,
     },
-    option:{
-        required:false
-    }
   },
   data() {
     return { items: null };
   },
   mounted() {
-      if(this.option){
-        this.items = this.fields
-      } else {
-    const newFields = {};
-    const fields = this.fields;
-    for (let key in fields) {
-        if(key == 'id'){continue}
-        newFields[key] = "";
-        }
-    this.items = newFields;}
-  },  
+    this.items = this.fields;
+  },
   methods: {
     cancelForm() {
       this.$emit("cancelAddForm");
@@ -51,6 +64,9 @@ export default {
     addCard() {
       this.$emit("addCard", this.items);
     },
+    editCard(){
+       this.$emit("editCard", this.items);
+    }
   },
 };
 </script>

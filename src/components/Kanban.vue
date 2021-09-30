@@ -1,13 +1,12 @@
 <template>
   <div class="container-fluide">
-    
     <div class="row">
-      <test
+      <modal
         v-if="addFormVisible"
         @cancelAddForm="cancelAddForm"
         @addCard="addCard"
         :fields="initialCardValues"
-        :option='true'
+        @editCard="ModalEditCard"
       />
     </div>
     <div class="row">
@@ -36,7 +35,12 @@
             <h3>{{ card.title }}</h3>
             <div>{{ card.description }}</div>
             <div>{{ card.createdAt.toLocaleDateString() }}</div>
-            <button class='btn btn-small btn-primary' @click='editCard(card)'>edit</button>
+            <button
+              class="btn btn-small btn-primary"
+              @click="editCard(card, column.id)"
+            >
+              edit
+            </button>
           </div>
         </draggable>
         <!-- DRAG END -->
@@ -49,24 +53,23 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-
-import Test from "@/components/Test";
+import Modal from "@/components/Modal";
 export default {
   name: "Kanban",
   components: {
     draggable,
-    
-    Test
+    Modal,
   },
+
   data() {
     return {
       initialCardValues: {
-                id:"",
-                title: "",
-                description: "",
-              },
+        id: "",
+        title: "",
+        description: "",
+      },
       addFormVisible: false,
-      addFormCurrentColumn: null,
+      ModalCurrentColumn: null,
       board: {
         id: 1,
         column: [
@@ -140,40 +143,54 @@ export default {
       });
     },
     cardFormVisible(id) {
-      this.addFormCurrentColumn = id;
+      this.ModalCurrentColumn = id;
       this.addFormVisible = true;
     },
     cancelAddForm() {
       this.addFormVisible = false;
-      this.addFormCurrentColumn = null;
-      this.initialCardValues = {id:'',title: "", description: ""}
+      this.ModalCurrentColumn = null;
+      this.initialCardValues = { id: "", title: "", description: "" };
     },
     addCard(item) {
-        console.log(item,'ITEM')
-      const columnId = this.addFormCurrentColumn;
+      const columnId = this.ModalCurrentColumn;
       const column = this.board.column.filter((item) => item.id == columnId);
       const newItem = {
-          description:item.description,
-          title:item.title,
-          createdAt: new Date()
+        description: item.description,
+        title: item.title,
+        createdAt: new Date(),
       };
       newItem.id = column[0].card.length + 1;
       column[0].card.push(newItem);
       this.addFormVisible = false;
-      this.addFormCurrentColumn = null;
+      this.ModalCurrentColumn = null;
     },
     dragOver(event) {
       event.from.classList.add("over");
-      console.log(event, "event");
     },
     dragEnd(event) {
       event.from.classList.remove("over");
     },
-    editCard(card){
-        console.log(card,'CARD')
-        this.initialCardValues = card
-        this.addFormVisible = true
-    }
+    editCard(card, columnId) {
+      this.initialCardValues = card;
+      this.ModalCurrentColumn = columnId;
+      this.addFormVisible = true;
+    },
+    ModalEditCard(card) {
+      try {
+        const column = this.board.column.filter(
+          (item) => item.id == this.ModalCurrentColumn
+        );
+   
+        column[0].card.forEach((elem) => {
+          if (elem.id == card.id) {
+            elem = card;
+            this.addFormVisible = false;
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
